@@ -18,6 +18,9 @@
             color: white;
             padding: 20px 0;
             text-align: center;
+            position: fixed; /* Fixe la bannière en haut */
+            width: 100%;
+            z-index: 1000; /* Assure que la bannière est au-dessus des autres éléments */
         }
         h1 {
             margin: 0;
@@ -41,7 +44,7 @@
         }
         section {
             padding: 40px 20px;
-            margin: 20px auto;
+            margin: 100px auto; /* Espace pour la bannière fixe */
             max-width: 800px;
             background: white;
             border-radius: 8px;
@@ -87,7 +90,7 @@
 </head>
 <body>
 
-<header>
+<header id="header">
     <div class="banner">
         <h1>Hanh Nguyen</h1>
         <h2>Product & Project Manager</h2>
@@ -166,6 +169,12 @@
             <li>Évaluation des étudiants à travers des projets groupe.</li>
             <li>Coaching collectif pour encourager la créativité.</li>
         </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>Microsoft PowerPoint</li>
+            <li>Zoom</li>
+            <li>Miro</li>
+        </ul>
     </div>
 
     <div class="job">
@@ -176,6 +185,12 @@
             <li>Analyse du marché et des besoins des clients finaux.</li>
             <li>Proposition d’une stratégie axée sur une niche de marché.</li>
             <li>Développement d’un plan stratégique détaillé.</li>
+        </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>Excel</li>
+            <li>Tableau</li>
+            <li>Google Analytics</li>
         </ul>
     </div>
 
@@ -188,6 +203,12 @@
             <li>Optimisation de l'expérience utilisateur (UX/UI).</li>
             <li>Coordination des tests fonctionnels.</li>
         </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>JIRA</li>
+            <li>Figma</li>
+            <li>Trello</li>
+        </ul>
     </div>
 
     <div class="job">
@@ -198,6 +219,12 @@
             <li>Pilotage du projet de bout en bout.</li>
             <li>Animation des comités de pilotage.</li>
             <li>Gestion proactive des risques.</li>
+        </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>Asana</li>
+            <li>Confluence</li>
+            <li>Slack</li>
         </ul>
     </div>
 
@@ -210,6 +237,12 @@
             <li>Facilitation des rituels Scrum.</li>
             <li>Conception de wireframes avec Figma.</li>
         </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>Figma</li>
+            <li>JIRA</li>
+            <li>Google Meet</li>
+        </ul>
     </div>
 
     <div class="job">
@@ -220,6 +253,12 @@
             <li>Déploiement de programmes de formation internationaux.</li>
             <li>Standardisation des processus opérationnels.</li>
             <li>Élaboration de plans de projet détaillés.</li>
+        </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>Microsoft Project</li>
+            <li>Zoom</li>
+            <li>LinkedIn Recruiter</li>
         </ul>
     </div>
 
@@ -232,6 +271,12 @@
             <li>Mise en œuvre de stratégies Lean.</li>
             <li>Supervision des contrats de vente.</li>
         </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>MS Office</li>
+            <li>Visio</li>
+            <li>SharePoint</li>
+        </ul>
     </div>
 
     <div class="job">
@@ -242,8 +287,15 @@
             <li>Analyse des besoins et propositions d’optimisation.</li>
             <li>Élaboration de rapports détaillés.</li>
         </ul>
+        <h4>Outils Utilisés :</h4>
+        <ul>
+            <li>AutoCAD</li>
+            <li>Minitab</li>
+            <li>Excel</li>
+        </ul>
     </div>
 </section>
+
 
 <section id="education">
     <h2>Éducation</h2>
@@ -281,6 +333,22 @@
 <footer>
     <p>&copy; 2024 Hanh Nguyen</p>
 </footer>
+
+<script>
+    let lastScrollTop = 0;
+    const header = document.getElementById("header");
+
+    window.addEventListener("scroll", function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            header.style.display = "none"; // Masque la bannière lors du défilement vers le bas
+        } else {
+            header.style.display = "block"; // Affiche la bannière lors du défilement vers le haut
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Pour éviter les valeurs négatives
+    });
+</script>
 
 </body>
 </html>
