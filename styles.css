@@ -5,6 +5,43 @@
     padding: 0;
 }
 
+.banner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.banner h1 {
+    margin: 10px 0;
+    font-size: 2.5em;
+    color: white;
+}
+
+.banner h2 {
+    margin: 5px 0;
+    font-weight: normal;
+    color: white;
+}
+
+.banner-contact {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+}
+
+.banner-contact a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.banner-contact a:hover {
+    text-decoration: underline;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
