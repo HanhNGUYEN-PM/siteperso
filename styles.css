@@ -16,17 +16,19 @@ header {
     position: fixed; /* Fixe la bannière en haut */
     width: 100%;
     z-index: 1000; /* Assure que la bannière est au-dessus des autres éléments */
+    top: 0; /* Assure que la bannière est collée en haut */
+    left: 0; /* Assure qu'elle prend toute la largeur */
 }
 
-/* Espace pour le contenu */
 section {
-    padding: 20px;
-    margin-top: 120px; /* Ajustez cet espace en fonction de la hauteur de la bannière */
+    padding: 40px 20px;
+    margin-top: 140px; /* Augmenter cette valeur pour correspondre à la hauteur de la bannière */
     max-width: 800px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+
 
 /* Styles pour les titres et le texte */
 h1 {
