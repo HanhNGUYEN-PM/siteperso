@@ -1,28 +1,20 @@
 /* Styles généraux */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f3e9;
-    color: #333;
+    padding-top: 140px; /* Correspond à la hauteur de votre bannière fixe */
 }
 
-/* Style de la bannière */
 header {
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    position: fixed; /* Fixe la bannière en haut */
+    height: 120px; /* Définissez une hauteur précise pour votre bannière */
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    z-index: 1000; /* Assure que la bannière est au-dessus des autres éléments */
-    top: 0; /* Assure que la bannière est collée en haut */
-    left: 0; /* Assure qu'elle prend toute la largeur */
+    z-index: 1000;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
 }
 
 section {
-    padding: 40px 20px;
-    margin-top: 140px; /* Augmenter cette valeur pour correspondre à la hauteur de la bannière */
+    margin-top: 0; /* Supprimez le margin-top des sections */
     max-width: 800px;
     background: white;
     border-radius: 8px;
