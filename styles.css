@@ -50,7 +50,7 @@ nav a:hover {
 
 /* Ajustement pour le scroll en tenant compte de la bannière */
 .section {
-    scroll-margin-top: 300px; /* Espace pour la bannière fixe */
+    scroll-margin-top: 500px; /* Espace pour la bannière fixe */
     max-width: 800px;
     margin: 20px auto;
     background: white;
