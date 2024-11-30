@@ -1,8 +1,11 @@
+Updated Responsive CSS
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    scroll-behavior: smooth; /* Ajoute un défilement fluide */
 }
 
 #header {
@@ -17,30 +20,14 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.banner {
-    text-align: center;
-}
-
-.banner h1 {
-    margin: 0;
-    font-size: 2.5em;
-}
-
-.banner h2 {
-    margin: 5px 0;
-    font-weight: normal;
-}
-
-body {
-    padding-top: 200px; /* Adjust based on header height */
-}
-
+/* Suppression du fond blanc pour la navigation */
 nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    background: transparent; /* Fond transparent */
 }
 
 nav ul li {
@@ -51,13 +38,19 @@ nav a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    padding: 5px 10px;
+    transition: background-color 0.3s;
+    border-radius: 4px;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    background-color: rgba(255,255,255,0.2); /* Effet de survol subtil */
+    text-decoration: none;
 }
 
+/* Ajustement pour le scroll en tenant compte de la bannière */
 .section {
+    scroll-margin-top: 200px; /* Espace pour la bannière fixe */
     max-width: 800px;
     margin: 20px auto;
     background: white;
