@@ -1,16 +1,19 @@
 /* Styles généraux */
-body {
-    padding-top: 140px; /* Correspond à la hauteur de votre bannière fixe */
+header {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: fixed; 
+    width: 100%;
+    z-index: 1000; 
+    top: 0;           /* Assurez-vous qu'il est à 0 */
+    left: 0;          /* Assurez-vous qu'il prend toute la largeur */
+    transform: none;   /* Neutralise tout effet de translation */
 }
 
-header {
-    height: 120px; /* Définissez une hauteur précise pour votre bannière */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+body {
+    padding-top: 120px; /* Correspond à la hauteur de votre bannière */
 }
 
 section {
