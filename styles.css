@@ -26,6 +26,7 @@ body {
     padding: 10px 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     height: 150px;
+    text-align: center; /* Center content in the header */
 }
 
 nav ul {
@@ -88,7 +89,7 @@ nav a:hover {
 }
 
 .job-details {
-    margin-left: 20px;
+    margin-left: 40px; /* Indentation for job details */
     color: #666;
 }
 
