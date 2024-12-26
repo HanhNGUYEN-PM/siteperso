@@ -283,90 +283,46 @@
     <script>
     (function() {
         emailjs.init("ikmV5F99t-UR8Xlag")
-            .then(() => {
-                console.log('EmailJS initialisé avec succès');
-            })
-            .catch(err => {
-                console.error('Erreur d\'initialisation EmailJS:', err);
-                alert('Le service de messagerie n\'est pas disponible pour le moment. Veuillez réessayer plus tard.');
-            });
     })();
 
     const contactForm = document.getElementById('contactForm');
     const submitButton = contactForm.querySelector('button[type="submit"]');
 
-    contactForm.addEventListener('submit', async function(event) {
+    contactForm.addEventListener('submit', function(event) {
         event.preventDefault();
         
+        // Désactiver le bouton et montrer l'état d'envoi
         submitButton.disabled = true;
         submitButton.textContent = 'Envoi en cours...';
         
-        const formData = {
-            from_name: document.getElementById('name').value.trim(),
-            from_email: document.getElementById('email').value.trim(),
-            message: document.getElementById('message').value.trim(),
+        // Récupérer les données du formulaire
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        // Envoyer l'email
+        emailjs.send("service_wsnckze", "template_x7ianru", {
+            from_name: name,
+            from_email: email,
+            message: message,
             to_name: "Hanh Nguyen",
-            reply_to: document.getElementById('email').value.trim()
-        };
-
-        // Validation des champs
-        if (!formData.from_name || !formData.from_email || !formData.message) {
-            alert("⚠️ Veuillez remplir tous les champs du formulaire.");
-            submitButton.disabled = false;
-            submitButton.textContent = 'Envoyer';
-            return;
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.from_email)) {
-            alert("⚠️ L'adresse email n'est pas valide. Veuillez vérifier votre saisie.");
-            submitButton.disabled = false;
-            submitButton.textContent = 'Envoyer';
-            return;
-        }
-
-        try {
-            console.log('Tentative d\'envoi...', formData);
-            
-            const response = await emailjs.send(
-                "service_wsnckze",
-                "template_x7ianru",
-                formData,
-                "ikmV5F99t-UR8Xlag"
-            );
-            
-            console.log('Réponse reçue:', response);
-
-            // Message de succès immédiat
-            const successMessage = `✅ Message envoyé avec succès!\n\n` +
-                                 `De: ${formData.from_name}\n` +
-                                 `Email: ${formData.from_email}\n\n` +
-                                 `Nous vous répondrons dans les plus brefs délais.`;
-            
-            console.log('Affichage du message de succès');
-            alert(successMessage);
-            contactForm.reset();
-            
-        } catch (error) {
-            console.error('Erreur détectée:', error);
-            
-            let errorMessage = "❌ Désolé, une erreur s'est produite.\n\n";
-            
-            if (error.status === 400) {
-                errorMessage += "Les informations saisies sont incorrectes. Veuillez vérifier vos données.";
-            } else if (error.status === 429) {
-                errorMessage += "Trop de tentatives. Veuillez réessayer dans quelques minutes.";
-            } else if (!navigator.onLine) {
-                errorMessage += "Pas de connexion Internet. Veuillez vérifier votre connexion.";
-            } else {
-                errorMessage += `Erreur technique (${error.status}): ${error.text || error.message}\nVeuillez réessayer ou nous contacter directement par email.`;
+            reply_to: email
+        }).then(
+            function(response) {
+                // Succès
+                alert(`✅ Message envoyé avec succès!\n\nMerci ${name}, nous vous répondrons bientôt.`);
+                contactForm.reset();
+            },
+            function(error) {
+                // Erreur
+                alert("❌ Désolé, une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.");
+                console.error("Erreur:", error);
             }
-            
-            alert(errorMessage);
-        } finally {
+        ).finally(function() {
+            // Réactiver le bouton
             submitButton.disabled = false;
             submitButton.textContent = 'Envoyer';
-        }
+        });
     });
 </script>
 
