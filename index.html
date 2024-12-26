@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hanh Nguyen - Product & Project Manager</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -281,36 +282,46 @@
 
     <script>
     (function() {
-        emailjs.init("ikmV5F99t-UR8Xlag"); // Remplacez par votre propre ID utilisateur EmailJS
+        emailjs.init("ikmV5F99t-UR8Xlag");
     })();
 
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
+    const contactForm = document.getElementById('contactForm');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', async function(event) {
         event.preventDefault();
         
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
-        var message = document.getElementById('message').value;
+        submitButton.disabled = true;
+        
+        const formData = {
+            from_name: document.getElementById('name').value.trim(),
+            from_email: document.getElementById('email').value.trim(),
+            message: document.getElementById('message').value.trim()
+        };
 
-        // Vérification basique des champs
-        if (!name || !email || !message) {
+        if (!formData.from_name || !formData.from_email || !formData.message) {
             alert("Veuillez remplir tous les champs.");
+            submitButton.disabled = false;
             return;
         }
 
-        emailjs.send("service_wsnckze", "template_x7ianru", {
-            from_name: name,
-            from_email: email,
-            message: message
-        }).then(
-            function(response) {
-                alert('Message envoyé avec succès!');
-                document.getElementById('contactForm').reset();
-            },
-            function(error) {
-                console.error('Erreur d\'envoi : ', error);  // Ajoute un log d'erreur pour le débogage
-                alert('Échec de l\'envoi du message. Veuillez réessayer.');
-            }
-        );
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.from_email)) {
+            alert("Veuillez entrer une adresse email valide.");
+            submitButton.disabled = false;
+            return;
+        }
+
+        try {
+            await emailjs.send("service_wsnckze", "template_x7ianru", formData);
+            alert('Message envoyé avec succès!');
+            contactForm.reset();
+        } catch (error) {
+            console.error('Erreur d\'envoi:', error);
+            alert('Échec de l\'envoi du message. Veuillez réessayer.');
+        } finally {
+            submitButton.disabled = false;
+        }
     });
 </script>
 
