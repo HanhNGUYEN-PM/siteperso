@@ -326,6 +326,8 @@
         }
 
         try {
+            console.log('Tentative d\'envoi...', formData);
+            
             const response = await emailjs.send(
                 "service_wsnckze",
                 "template_x7ianru",
@@ -333,17 +335,21 @@
                 "ikmV5F99t-UR8Xlag"
             );
             
-            if (response.status === 200) {
-                // Message de succès
-                const successMessage = `✅ Message envoyé avec succès!\n\n` +
-                                     `De: ${formData.from_name}\n` +
-                                     `Email: ${formData.from_email}\n\n` +
-                                     `Nous vous répondrons dans les plus brefs délais.`;
-                alert(successMessage);
-                contactForm.reset();
-            }
+            console.log('Réponse reçue:', response);
+
+            // Message de succès immédiat
+            const successMessage = `✅ Message envoyé avec succès!\n\n` +
+                                 `De: ${formData.from_name}\n` +
+                                 `Email: ${formData.from_email}\n\n` +
+                                 `Nous vous répondrons dans les plus brefs délais.`;
+            
+            console.log('Affichage du message de succès');
+            alert(successMessage);
+            contactForm.reset();
+            
         } catch (error) {
-            // Messages d'erreur détaillés
+            console.error('Erreur détectée:', error);
+            
             let errorMessage = "❌ Désolé, une erreur s'est produite.\n\n";
             
             if (error.status === 400) {
@@ -353,10 +359,9 @@
             } else if (!navigator.onLine) {
                 errorMessage += "Pas de connexion Internet. Veuillez vérifier votre connexion.";
             } else {
-                errorMessage += "Erreur technique. Veuillez réessayer ou nous contacter directement par email.";
+                errorMessage += `Erreur technique (${error.status}): ${error.text || error.message}\nVeuillez réessayer ou nous contacter directement par email.`;
             }
             
-            console.error('Détails de l\'erreur:', error);
             alert(errorMessage);
         } finally {
             submitButton.disabled = false;
