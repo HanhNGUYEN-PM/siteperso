@@ -293,7 +293,6 @@
     const submitButton = contactForm.querySelector('button[type="submit"]');
     const notification = document.getElementById('notification');
 
-    // Fonction pour afficher les notifications
     function showNotification(message, type) {
         notification.textContent = message;
         notification.style.display = 'block';
@@ -306,7 +305,6 @@
             notification.style.color = 'white';
         }
 
-        // Faire disparaître la notification après 5 secondes
         setTimeout(() => {
             notification.style.display = 'none';
         }, 5000);
@@ -322,22 +320,41 @@
         const email = document.getElementById('email').value.trim();
         const message = document.getElementById('message').value.trim();
 
-        emailjs.send("service_wsnckze", "template_x7ianru", {
+        const templateParams = {
             from_name: name,
             from_email: email,
             message: message,
             to_name: "Hanh Nguyen",
             reply_to: email
-        }).then(
+        };
+
+        console.log('Tentative d\'envoi avec les paramètres:', templateParams);
+
+        emailjs.send(
+            "service_wsnckze",
+            "template_x7ianru",
+            templateParams
+        ).then(
             function(response) {
-                // Message de succès
+                console.log('Succès:', response);
                 showNotification(`✅ Message envoyé avec succès! Merci ${name}, nous vous répondrons bientôt.`, 'success');
                 contactForm.reset();
             },
             function(error) {
-                // Message d'erreur
-                showNotification("❌ Désolé, une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.", 'error');
-                console.error("Erreur:", error);
+                console.error('Erreur détaillée:', error);
+                let errorMessage = "❌ Erreur: ";
+                
+                if (error.status === 400) {
+                    errorMessage += "Configuration incorrecte du service email.";
+                } else if (error.status === 403) {
+                    errorMessage += "Accès non autorisé. Vérifiez votre clé API.";
+                } else if (error.status === 429) {
+                    errorMessage += "Trop de tentatives. Attendez quelques minutes.";
+                } else {
+                    errorMessage += error.text || "Une erreur s'est produite. Code: " + error.status;
+                }
+                
+                showNotification(errorMessage, 'error');
             }
         ).finally(function() {
             submitButton.disabled = false;
