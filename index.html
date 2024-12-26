@@ -283,6 +283,15 @@
     <script>
     (function() {
         emailjs.init("ikmV5F99t-UR8Xlag");
+        
+        // Test de la connexion EmailJS
+        emailjs.init("ikmV5F99t-UR8Xlag")
+            .then(() => {
+                console.log('EmailJS initialisé avec succès');
+            })
+            .catch(err => {
+                console.error('Erreur d\'initialisation EmailJS:', err);
+            });
     })();
 
     const contactForm = document.getElementById('contactForm');
@@ -313,18 +322,28 @@
         }
 
         try {
-            const response = await emailjs.send("service_wsnckze", "template_x7ianru", formData);
-            console.log('Succès:', response);
+            console.log('Tentative d\'envoi avec les données:', formData);
+            
+            const response = await emailjs.send(
+                "service_wsnckze",  // Vérifiez que c'est votre Service ID
+                "template_x7ianru", // Vérifiez que c'est votre Template ID
+                formData,
+                "ikmV5F99t-UR8Xlag" // Votre Public Key
+            );
+            
+            console.log('Réponse du serveur:', response);
             alert('Message envoyé avec succès!');
             contactForm.reset();
         } catch (error) {
-            console.error('Détails de l\'erreur:', {
+            console.error('Erreur détaillée:', {
                 message: error.message,
                 name: error.name,
                 text: error.text,
-                status: error?.status
+                status: error?.status,
+                stack: error.stack
             });
-            alert(`Échec de l'envoi du message: ${error.message}`);
+            
+            alert(`Erreur d'envoi: ${error.message || 'Erreur inconnue'}`);
         } finally {
             submitButton.disabled = false;
         }
