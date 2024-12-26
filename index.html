@@ -313,12 +313,18 @@
         }
 
         try {
-            await emailjs.send("service_wsnckze", "template_x7ianru", formData);
+            const response = await emailjs.send("service_wsnckze", "template_x7ianru", formData);
+            console.log('Succès:', response);
             alert('Message envoyé avec succès!');
             contactForm.reset();
         } catch (error) {
-            console.error('Erreur d\'envoi:', error);
-            alert('Échec de l\'envoi du message. Veuillez réessayer.');
+            console.error('Détails de l\'erreur:', {
+                message: error.message,
+                name: error.name,
+                text: error.text,
+                status: error?.status
+            });
+            alert(`Échec de l'envoi du message: ${error.message}`);
         } finally {
             submitButton.disabled = false;
         }
