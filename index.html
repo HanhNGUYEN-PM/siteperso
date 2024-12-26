@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <div id="notification" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+        padding: 15px 25px; border-radius: 5px; z-index: 1000; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    </div>
+
     <div id="header">
         <div class="banner">
             <h1>Hanh Nguyen</h1>
@@ -287,20 +291,37 @@
 
     const contactForm = document.getElementById('contactForm');
     const submitButton = contactForm.querySelector('button[type="submit"]');
+    const notification = document.getElementById('notification');
+
+    // Fonction pour afficher les notifications
+    function showNotification(message, type) {
+        notification.textContent = message;
+        notification.style.display = 'block';
+        
+        if (type === 'success') {
+            notification.style.backgroundColor = '#4CAF50';
+            notification.style.color = 'white';
+        } else {
+            notification.style.backgroundColor = '#f44336';
+            notification.style.color = 'white';
+        }
+
+        // Faire disparaître la notification après 5 secondes
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
+    }
 
     contactForm.addEventListener('submit', function(event) {
         event.preventDefault();
         
-        // Désactiver le bouton et montrer l'état d'envoi
         submitButton.disabled = true;
         submitButton.textContent = 'Envoi en cours...';
         
-        // Récupérer les données du formulaire
         const name = document.getElementById('name').value.trim();
         const email = document.getElementById('email').value.trim();
         const message = document.getElementById('message').value.trim();
 
-        // Envoyer l'email
         emailjs.send("service_wsnckze", "template_x7ianru", {
             from_name: name,
             from_email: email,
@@ -309,17 +330,16 @@
             reply_to: email
         }).then(
             function(response) {
-                // Succès
-                alert(`✅ Message envoyé avec succès!\n\nMerci ${name}, nous vous répondrons bientôt.`);
+                // Message de succès
+                showNotification(`✅ Message envoyé avec succès! Merci ${name}, nous vous répondrons bientôt.`, 'success');
                 contactForm.reset();
             },
             function(error) {
-                // Erreur
-                alert("❌ Désolé, une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.");
+                // Message d'erreur
+                showNotification("❌ Désolé, une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.", 'error');
                 console.error("Erreur:", error);
             }
         ).finally(function() {
-            // Réactiver le bouton
             submitButton.disabled = false;
             submitButton.textContent = 'Envoyer';
         });
