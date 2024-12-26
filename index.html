@@ -282,9 +282,7 @@
 
     <script>
     (function() {
-        emailjs.init("ikmV5F99t-UR8Xlag");
-        
-        // Test de la connexion EmailJS
+        // Test initial de la connexion
         emailjs.init("ikmV5F99t-UR8Xlag")
             .then(() => {
                 console.log('EmailJS initialisé avec succès');
@@ -305,7 +303,9 @@
         const formData = {
             from_name: document.getElementById('name').value.trim(),
             from_email: document.getElementById('email').value.trim(),
-            message: document.getElementById('message').value.trim()
+            message: document.getElementById('message').value.trim(),
+            to_name: "Hanh Nguyen", // Ajout du destinataire
+            reply_to: document.getElementById('email').value.trim() // Pour les réponses
         };
 
         if (!formData.from_name || !formData.from_email || !formData.message) {
@@ -324,26 +324,32 @@
         try {
             console.log('Tentative d\'envoi avec les données:', formData);
             
+            const templateParams = {
+                to_name: "Hanh Nguyen",
+                from_name: formData.from_name,
+                from_email: formData.from_email,
+                message: formData.message,
+                reply_to: formData.from_email
+            };
+
             const response = await emailjs.send(
-                "service_wsnckze",  // Vérifiez que c'est votre Service ID
-                "template_x7ianru", // Vérifiez que c'est votre Template ID
-                formData,
-                "ikmV5F99t-UR8Xlag" // Votre Public Key
+                "service_wsnckze",
+                "template_x7ianru",
+                templateParams,
+                "ikmV5F99t-UR8Xlag"
             );
             
             console.log('Réponse du serveur:', response);
-            alert('Message envoyé avec succès!');
-            contactForm.reset();
-        } catch (error) {
-            console.error('Erreur détaillée:', {
-                message: error.message,
-                name: error.name,
-                text: error.text,
-                status: error?.status,
-                stack: error.stack
-            });
             
-            alert(`Erreur d'envoi: ${error.message || 'Erreur inconnue'}`);
+            if (response.status === 200) {
+                alert('Message envoyé avec succès!');
+                contactForm.reset();
+            } else {
+                throw new Error('Erreur lors de l\'envoi');
+            }
+        } catch (error) {
+            console.error('Erreur complète:', error);
+            alert(`Erreur d'envoi: ${error.message || 'Une erreur s\'est produite lors de l\'envoi du message'}`);
         } finally {
             submitButton.disabled = false;
         }
