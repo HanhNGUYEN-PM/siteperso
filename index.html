@@ -282,13 +282,13 @@
 
     <script>
     (function() {
-        // Test initial de la connexion
         emailjs.init("ikmV5F99t-UR8Xlag")
             .then(() => {
                 console.log('EmailJS initialisé avec succès');
             })
             .catch(err => {
                 console.error('Erreur d\'initialisation EmailJS:', err);
+                alert('Le service de messagerie n\'est pas disponible pour le moment. Veuillez réessayer plus tard.');
             });
     })();
 
@@ -299,59 +299,68 @@
         event.preventDefault();
         
         submitButton.disabled = true;
+        submitButton.textContent = 'Envoi en cours...';
         
         const formData = {
             from_name: document.getElementById('name').value.trim(),
             from_email: document.getElementById('email').value.trim(),
             message: document.getElementById('message').value.trim(),
-            to_name: "Hanh Nguyen", // Ajout du destinataire
-            reply_to: document.getElementById('email').value.trim() // Pour les réponses
+            to_name: "Hanh Nguyen",
+            reply_to: document.getElementById('email').value.trim()
         };
 
+        // Validation des champs
         if (!formData.from_name || !formData.from_email || !formData.message) {
-            alert("Veuillez remplir tous les champs.");
+            alert("⚠️ Veuillez remplir tous les champs du formulaire.");
             submitButton.disabled = false;
+            submitButton.textContent = 'Envoyer';
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.from_email)) {
-            alert("Veuillez entrer une adresse email valide.");
+            alert("⚠️ L'adresse email n'est pas valide. Veuillez vérifier votre saisie.");
             submitButton.disabled = false;
+            submitButton.textContent = 'Envoyer';
             return;
         }
 
         try {
-            console.log('Tentative d\'envoi avec les données:', formData);
-            
-            const templateParams = {
-                to_name: "Hanh Nguyen",
-                from_name: formData.from_name,
-                from_email: formData.from_email,
-                message: formData.message,
-                reply_to: formData.from_email
-            };
-
             const response = await emailjs.send(
                 "service_wsnckze",
                 "template_x7ianru",
-                templateParams,
+                formData,
                 "ikmV5F99t-UR8Xlag"
             );
             
-            console.log('Réponse du serveur:', response);
-            
             if (response.status === 200) {
-                alert('Message envoyé avec succès!');
+                // Message de succès
+                const successMessage = `✅ Message envoyé avec succès!\n\n` +
+                                     `De: ${formData.from_name}\n` +
+                                     `Email: ${formData.from_email}\n\n` +
+                                     `Nous vous répondrons dans les plus brefs délais.`;
+                alert(successMessage);
                 contactForm.reset();
-            } else {
-                throw new Error('Erreur lors de l\'envoi');
             }
         } catch (error) {
-            console.error('Erreur complète:', error);
-            alert(`Erreur d'envoi: ${error.message || 'Une erreur s\'est produite lors de l\'envoi du message'}`);
+            // Messages d'erreur détaillés
+            let errorMessage = "❌ Désolé, une erreur s'est produite.\n\n";
+            
+            if (error.status === 400) {
+                errorMessage += "Les informations saisies sont incorrectes. Veuillez vérifier vos données.";
+            } else if (error.status === 429) {
+                errorMessage += "Trop de tentatives. Veuillez réessayer dans quelques minutes.";
+            } else if (!navigator.onLine) {
+                errorMessage += "Pas de connexion Internet. Veuillez vérifier votre connexion.";
+            } else {
+                errorMessage += "Erreur technique. Veuillez réessayer ou nous contacter directement par email.";
+            }
+            
+            console.error('Détails de l\'erreur:', error);
+            alert(errorMessage);
         } finally {
             submitButton.disabled = false;
+            submitButton.textContent = 'Envoyer';
         }
     });
 </script>
